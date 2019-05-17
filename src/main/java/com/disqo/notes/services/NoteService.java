@@ -30,6 +30,7 @@ public class NoteService {
         if(!note.getNoteUser().getId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,"This noteUser doesn't have access to the specified note.");
         }
+        note.setNoteUser(null);
         return note;
     }
 
@@ -58,6 +59,6 @@ public class NoteService {
         existingNote.setTitle(note.getTitle());
         existingNote.setNote(note.getNote());
         existingNote.setLastUpdatedOn(new Date());
-        return noteRepository.save(note);
+        return noteRepository.save(existingNote);
     }
 }
