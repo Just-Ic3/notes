@@ -17,12 +17,13 @@ public class NoteController {
     private final NoteService noteService;
 
     @GetMapping()
-    ArrayList<Note> getNotes() {
-        return noteService.findAllByUser(userId);
+    ArrayList<Note> getNotes(@RequestHeader(name = "token") String token) {
+        //TODO: get user info from token
+        return noteService.findAllByUser();
     }
 
     @GetMapping("/{id}")
-    Note getNoteById(@PathVariable("id") String id) {
+    Note getNoteById(@PathVariable("id") String id, @RequestHeader(name = "token") String token) {
         return noteService.getNoteById(id);
     }
 
