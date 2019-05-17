@@ -21,7 +21,7 @@ public class UserService {
     public NoteUser registerNewUser(NoteUser noteUser) {
         NoteUser alreadyExists = userRepository.findByEmail(noteUser.getEmail());
         if(alreadyExists != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"A noteUser with this password already exists.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"A noteUser with this email already exists.");
         }
         noteUser.setCreatedOn(new Date());
         noteUser.setLastUpdatedOn(noteUser.getCreatedOn());
