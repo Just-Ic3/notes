@@ -8,6 +8,6 @@ import java.util.ArrayList;
 
 @Repository
 public interface NoteRepository extends JpaRepository<Note,String> {
-    ArrayList<Note> findAllByUser_Id(String userId);
+    ArrayList<Note> findAllByNoteUser_Id(String userId);
     Note findOneById(String id);
 }

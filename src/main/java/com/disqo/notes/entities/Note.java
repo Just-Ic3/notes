@@ -30,7 +30,7 @@ public class Note {
     private Date createdOn;
     private Date lastUpdatedOn;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = NoteUser.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private User user;
+    private NoteUser noteUser;
 }

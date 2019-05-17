@@ -23,7 +23,7 @@ public class NoteController {
 
     @GetMapping()
     ArrayList<Note> getNotes(@RequestHeader(name = "token") String token) {
-        //TODO: get user info from token
+        //TODO: get noteUser info from token
         UserSession session = getSession(token);
         return noteService.findAllByUser(session.getId());
     }
@@ -49,7 +49,7 @@ public class NoteController {
     private UserSession getSession(String token) {
         UserSession session = hazelcastService.getSession(token);
         if(session == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Invalid user token");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Invalid noteUser token");
         }
         return session;
     }

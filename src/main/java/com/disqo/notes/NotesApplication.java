@@ -7,9 +7,6 @@ import com.hazelcast.core.HazelcastInstance;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.hazelcast.HazelcastKeyValueAdapter;
-import org.springframework.data.keyvalue.core.KeyValueOperations;
-import org.springframework.data.keyvalue.core.KeyValueTemplate;
 
 @SpringBootApplication
 public class NotesApplication {
@@ -31,16 +28,6 @@ public class NotesApplication {
     @Bean
     public HazelcastService hazelcastService() {
         return new HazelcastService(hazelcastInstance());
-    }
-
-    @Bean
-    public KeyValueOperations keyValueTemplate() {
-        return new KeyValueTemplate(new HazelcastKeyValueAdapter(hazelcastInstance()));
-    }
-
-    @Bean
-    public HazelcastKeyValueAdapter hazelcastKeyValueAdapter() {
-        return new HazelcastKeyValueAdapter(hazelcastInstance());
     }
 
     public static void main(String[] args) {

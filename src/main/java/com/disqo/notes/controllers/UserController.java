@@ -1,7 +1,7 @@
 package com.disqo.notes.controllers;
 
 import com.disqo.notes.dtos.UserDTO;
-import com.disqo.notes.entities.User;
+import com.disqo.notes.entities.NoteUser;
 import com.disqo.notes.requests.LoginRequest;
 import com.disqo.notes.services.HazelcastService;
 import com.disqo.notes.services.UserService;
@@ -23,8 +23,8 @@ public class UserController {
     private final HazelcastService hazelcastService;
 
     @PostMapping(path = "/public/register", consumes = "application/json", produces = "application/json")
-    public UserDTO registerNewUser(@RequestBody @Valid User user) {
-        return new UserDTO(userService.registerNewUser(user));
+    public UserDTO registerNewUser(@RequestBody @Valid NoteUser noteUser) {
+        return new UserDTO(userService.registerNewUser(noteUser));
     }
 
     @PostMapping(path = "/public/login", consumes = "application/json", produces = "plain/text")
@@ -38,15 +38,15 @@ public class UserController {
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
-    public UserDTO editUser(@RequestBody User user, @RequestHeader("token") String token) {
+    public UserDTO editUser(@RequestBody NoteUser noteUser, @RequestHeader("token") String token) {
         UserSession session = getSession(token);
-        return new UserDTO(userService.editUser(user, session.getId()));
+        return new UserDTO(userService.editUser(noteUser, session.getId()));
     }
 
     private UserSession getSession(String token) {
         UserSession session = hazelcastService.getSession(token);
         if(session == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Invalid user token");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Invalid noteUser token");
         }
         return session;
     }

@@ -1,7 +1,7 @@
 package com.disqo.notes.services;
 
 import com.disqo.notes.entities.Note;
-import com.disqo.notes.entities.User;
+import com.disqo.notes.entities.NoteUser;
 import com.disqo.notes.repositories.NoteRepository;
 import com.disqo.notes.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class NoteService {
     private final UserRepository userRepository;
 
     public ArrayList<Note> findAllByUser(String userId) {
-        return noteRepository.findAllByUser_Id(userId);
+        return noteRepository.findAllByNoteUser_Id(userId);
     }
 
     public Note getNoteById(String id, String userId) {
@@ -27,8 +27,8 @@ public class NoteService {
         if(note == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Note not found.");
         }
-        if(!note.getUser().getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"This user doesn't have access to the specified note.");
+        if(!note.getNoteUser().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"This noteUser doesn't have access to the specified note.");
         }
         return note;
     }
@@ -37,11 +37,11 @@ public class NoteService {
         if(note.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Can't create an already existing note.");
         }
-        User user = userRepository.findOneById(userId);
-        if(user == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"The user does not exist.");
+        NoteUser noteUser = userRepository.findOneById(userId);
+        if(noteUser == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"The noteUser does not exist.");
         }
-        note.setUser(user);
+        note.setNoteUser(noteUser);
         note.setCreatedOn(new Date());
         note.setLastUpdatedOn(note.getCreatedOn());
         return noteRepository.save(note);
@@ -52,8 +52,8 @@ public class NoteService {
         if(existingNote == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The specified note could not be found.");
         }
-        if(!existingNote.getUser().getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"This user doesn't have access to the specified note.");
+        if(!existingNote.getNoteUser().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"This noteUser doesn't have access to the specified note.");
         }
         existingNote.setTitle(note.getTitle());
         existingNote.setNote(note.getNote());

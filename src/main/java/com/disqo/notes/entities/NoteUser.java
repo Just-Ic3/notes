@@ -10,15 +10,15 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table
 @NoArgsConstructor
-public class User {
+public class NoteUser {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -34,9 +34,9 @@ public class User {
     private Date createdOn;
     private Date lastUpdatedOn;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "noteUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("noteUser")
     @OrderBy("lastUpdatedOn DESC ")
     @JsonIgnore
-    private ArrayList<Note> notes;
+    private List<Note> notes;
 }
