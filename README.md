@@ -13,11 +13,17 @@ curl -X POST "http://localhost:8080/users/public/login" -H  "accept: plain/text"
 
 Logout:
 
+curl -X POST "http://localhost:8080/users/logout" -H  "accept: */*" -H  "token: 929762c7-2654-4727-b4f6-ba6ebaf76cc0"
+
+Edit:
+
+curl -X PUT "http://localhost:8080/users" -H  "accept: application/json" -H  "token: token" -H  "Content-Type: application/json" -d "{  \"createdOn\": \"2019-05-17T03:11:43.786Z\",  \"email\": \"string\",  \"id\": \"string\",  \"lastUpdatedOn\": \"2019-05-17T03:11:43.786Z\",  \"password\": \"newpass\"}"
 
 
 ===NOTES===
 
 List:
+
 curl -X GET "http://localhost:8080/notes" -H  "accept: */*" -H  "token: 3764212e-bd55-40db-afab-d46aac626d8d"
 
 Get One:
