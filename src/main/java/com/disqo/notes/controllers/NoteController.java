@@ -1,9 +1,11 @@
 package com.disqo.notes.controllers;
 
 import com.disqo.notes.entities.Note;
+import com.disqo.notes.services.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController
@@ -16,7 +18,7 @@ public class NoteController {
 
     @GetMapping()
     ArrayList<Note> getNotes() {
-        return noteService.findAll();
+        return noteService.findAllByUser(userId);
     }
 
     @GetMapping("/{id}")
@@ -24,13 +26,13 @@ public class NoteController {
         return noteService.getNoteById(id);
     }
 
-    @PostMapping()
-    Note createNewNote(Note note) {
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    Note createNewNote(@RequestBody @Valid Note note) {
         return noteService.createNewNote(note);
     }
 
-    @PutMapping()
-    Note editNote(Note note) {
+    @PutMapping(consumes = "application/json", produces = "application/json")
+    Note editNote(@RequestBody @Valid Note note) {
         return noteService.editNote(note);
     }
 }
