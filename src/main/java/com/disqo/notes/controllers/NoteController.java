@@ -28,12 +28,12 @@ public class NoteController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    Note createNewNote(@RequestBody @Valid Note note) {
+    Note createNewNote(@RequestBody @Valid Note note, @RequestHeader(name = "token") String token) {
         return noteService.createNewNote(note);
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
-    Note editNote(@RequestBody @Valid Note note) {
+    Note editNote(@RequestBody @Valid Note note, @RequestHeader(name = "token") String token) {
         return noteService.editNote(note);
     }
 }
