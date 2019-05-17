@@ -3,6 +3,7 @@ package com.disqo.notes.services;
 import com.disqo.notes.entities.User;
 import com.disqo.notes.repositories.UserRepository;
 import com.disqo.notes.requests.LoginRequest;
+import com.disqo.notes.sessions.UserSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.Date;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final HazelcastService hazelcastService;
 
     public User registerNewUser(User user) {
         User alreadyExists = userRepository.findByEmail(user.getEmail());
@@ -27,11 +29,20 @@ public class UserService {
     }
 
     public String login(LoginRequest loginRequest) {
-        //TODO
-        return "";
+        User user = userRepository.findByEmailAndPassword(loginRequest.getEmail(),loginRequest.getPassword());
+        if(user == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Wrong email/password combination.");
+        }
+        UserSession userSession = new UserSession(user);
+        userSession = hazelcastService.createSession(userSession);
+        return userSession.getToken();
     }
 
-    public User editUser(User user, String token) {
+    public void logout(String token) {
+        hazelcastService.deleteSession(token);
+    }
+
+    public User editUser(User user, String userIdFromToken) {
         User foundUser = userRepository.findOneById(user.getId());
         if(foundUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The specified user could not be found.");

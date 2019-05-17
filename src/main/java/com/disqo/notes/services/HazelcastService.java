@@ -6,6 +6,8 @@ import com.hazelcast.core.IMap;
 import com.hazelcast.query.EntryObject;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.PredicateBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -36,11 +38,15 @@ public class HazelcastService {
 
     public void deleteSession(String id) {
         UserSession userSession = userSessionIMap.get(id);
-        if(userSession == null) { return; }
+        if(userSession == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No session found for provided token.");
+        }
         EntryObject e = new PredicateBuilder().getEntryObject();
         Predicate predicate = e.get("id").equal(userSession.getId());
         userSessionIMap.removeAll(predicate);
     }
+
+
 
 
 }
