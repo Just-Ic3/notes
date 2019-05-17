@@ -1,7 +1,9 @@
 package com.disqo.notes.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,6 +17,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -34,5 +37,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("user")
     @OrderBy("lastUpdatedOn DESC ")
+    @JsonIgnore
     private ArrayList<Note> notes;
 }

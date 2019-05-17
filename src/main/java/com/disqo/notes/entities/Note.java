@@ -2,6 +2,7 @@ package com.disqo.notes.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table
+@NoArgsConstructor
 public class Note {
     @Id
     @GeneratedValue(generator = "system-uuid")
