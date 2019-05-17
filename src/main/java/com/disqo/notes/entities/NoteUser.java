@@ -34,7 +34,7 @@ public class NoteUser {
     private Date createdOn;
     private Date lastUpdatedOn;
 
-    @OneToMany(mappedBy = "noteUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "noteUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("noteUser")
     @OrderBy("lastUpdatedOn DESC ")
     @JsonIgnore
