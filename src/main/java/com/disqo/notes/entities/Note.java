@@ -1,5 +1,6 @@
 package com.disqo.notes.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -28,5 +29,6 @@ public class Note {
     private Date lastUpdatedOn;
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 }
