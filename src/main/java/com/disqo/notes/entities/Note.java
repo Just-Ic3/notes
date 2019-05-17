@@ -26,4 +26,7 @@ public class Note {
 
     private Date createdOn;
     private Date lastUpdatedOn;
+
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private User user;
 }
