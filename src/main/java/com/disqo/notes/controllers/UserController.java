@@ -1,6 +1,9 @@
 package com.disqo.notes.controllers;
 
+import com.disqo.notes.dtos.UserDTO;
 import com.disqo.notes.entities.User;
+import com.disqo.notes.requests.LoginRequest;
+import com.disqo.notes.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +19,7 @@ public class UserController {
 
     @PostMapping(path = "/public/register", consumes = "application/json", produces = "application/json")
     UserDTO registerNewUser(@RequestBody @Valid User user) {
-        return new UserDto(userService.registerNewUser(user));
+        return new UserDTO(userService.registerNewUser(user));
     }
 
     @PostMapping(path = "/public/login", consumes = "application/json", produces = "plain/text")
@@ -25,8 +28,8 @@ public class UserController {
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
-    UserDTO editUser(@RequestBody User user) {
-        return userService.editUser(user);
+    UserDTO editUser(@RequestBody User user, @RequestHeader("token") String token) {
+        return new UserDTO(userService.editUser(user, token));
     }
 }
 
