@@ -23,19 +23,15 @@ import java.util.ArrayList;
 public class NoteController {
 
     private final NoteService noteService;
-    private final HazelcastService hazelcastService;
 
     @GetMapping()
-    ArrayList<Note> getNotes(@RequestHeader(name = "token") String token) {
-        //TODO: get noteUser info from token
-        UserSession session = getSession(token);
-        return noteService.findAllByUser(session.getId());
+    ArrayList<Note> getNotes(@AuthenticationPrincipal NoteUserPrincipal userPrincipal) {
+        return noteService.findAllByUser(userPrincipal.getId());
     }
 
     @GetMapping("/{id}")
-    Note getNoteById(@PathVariable("id") String id, @RequestHeader(name = "token") String token) {
-        UserSession session = getSession(token);
-        return noteService.getNoteById(id,session.getId());
+    Note getNoteById(@PathVariable("id") String id, @AuthenticationPrincipal NoteUserPrincipal userPrincipal) {
+        return noteService.getNoteById(id,userPrincipal.getId());
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -44,16 +40,7 @@ public class NoteController {
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")
-    Note editNote(@RequestBody @Valid Note note, @RequestHeader(name = "token") String token) {
-        UserSession session = getSession(token);
-        return noteService.editNote(note,session.getId());
-    }
-
-    private UserSession getSession(String token) {
-        UserSession session = hazelcastService.getSession(token);
-        if(session == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Invalid noteUser token");
-        }
-        return session;
+    Note editNote(@RequestBody @Valid Note note, @AuthenticationPrincipal NoteUserPrincipal noteUserPrincipal) {
+        return noteService.editNote(note,noteUserPrincipal.getId());
     }
 }
