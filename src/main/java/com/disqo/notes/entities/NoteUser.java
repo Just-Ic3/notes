@@ -1,5 +1,6 @@
 package com.disqo.notes.entities;
 
+import com.disqo.notes.requests.SignupRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -19,6 +20,14 @@ import java.util.List;
 @Table
 @NoArgsConstructor
 public class NoteUser {
+
+    public NoteUser(SignupRequest signupRequest) {
+        email = signupRequest.getEmail();
+        password = signupRequest.getPassword();
+        createdOn = new Date();
+        lastUpdatedOn = createdOn;
+    }
+
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")

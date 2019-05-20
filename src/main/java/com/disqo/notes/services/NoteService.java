@@ -4,6 +4,7 @@ import com.disqo.notes.entities.Note;
 import com.disqo.notes.entities.NoteUser;
 import com.disqo.notes.repositories.NoteRepository;
 import com.disqo.notes.repositories.UserRepository;
+import com.disqo.notes.requests.NoteCreationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,17 +35,13 @@ public class NoteService {
         return note;
     }
 
-    public Note createNewNote(Note note, String userId) {
-        if(note.getId() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Can't create an already existing note.");
-        }
+    public Note createNewNote(NoteCreationRequest request, String userId) {
         NoteUser noteUser = userRepository.findOneById(userId);
         if(noteUser == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,"The noteUser does not exist.");
         }
+        Note note = new Note(request);
         note.setNoteUser(noteUser);
-        note.setCreatedOn(new Date());
-        note.setLastUpdatedOn(note.getCreatedOn());
         return noteRepository.save(note);
     }
 
