@@ -1,15 +1,19 @@
 package com.disqo.notes.controllers;
 
 import com.disqo.notes.entities.Note;
+import com.disqo.notes.requests.NoteCreationRequest;
 import com.disqo.notes.services.HazelcastService;
 import com.disqo.notes.services.NoteService;
+import com.disqo.notes.sessions.NoteUserPrincipal;
 import com.disqo.notes.sessions.UserSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 
 @RestController
@@ -35,9 +39,8 @@ public class NoteController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    Note createNewNote(@RequestBody @Valid Note note, @RequestHeader(name = "token") String token) {
-        UserSession session = getSession(token);
-        return noteService.createNewNote(note,session.getId());
+    Note createNewNote(@RequestBody @Valid NoteCreationRequest request, @AuthenticationPrincipal NoteUserPrincipal principal) {
+        return noteService.createNewNote(request,principal.getId());
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")

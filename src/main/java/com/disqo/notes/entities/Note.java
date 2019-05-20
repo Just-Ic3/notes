@@ -1,5 +1,6 @@
 package com.disqo.notes.entities;
 
+import com.disqo.notes.requests.NoteCreationRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -18,6 +19,14 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Note {
+
+    public Note(NoteCreationRequest request) {
+        title = request.getTitle();
+        note = request.getNote();
+        createdOn = new Date();
+        lastUpdatedOn = createdOn;
+    }
+
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -34,5 +43,6 @@ public class Note {
 
     @ManyToOne(targetEntity = NoteUser.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("notes")
+    @JsonIgnore
     private NoteUser noteUser;
 }
