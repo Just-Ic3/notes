@@ -6,14 +6,17 @@ import com.disqo.notes.requests.LoginRequest;
 import com.disqo.notes.requests.SignupRequest;
 import com.disqo.notes.services.HazelcastService;
 import com.disqo.notes.services.UserService;
+import com.disqo.notes.sessions.NoteUserPrincipal;
 import com.disqo.notes.sessions.UserSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 @RestController
 @RequestMapping("/users")
@@ -22,7 +25,6 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    private final HazelcastService hazelcastService;
 
     @PostMapping(path = "/public/register", consumes = "application/json", produces = "application/json")
     public UserDTO registerNewUser(@RequestBody @Valid SignupRequest request) {
@@ -30,28 +32,19 @@ public class UserController {
         return new UserDTO(userService.registerNewUser(request));
     }
 
-    @PostMapping(path = "/public/login", consumes = "application/json", produces = "plain/text")
-    public String login(@RequestBody @Valid LoginRequest loginRequest) {
-        return userService.login(loginRequest);
-    }
+//    @PostMapping(path = "/public/login", consumes = "application/json", produces = "plain/text")
+//    public String login(@RequestBody @Valid LoginRequest loginRequest) {
+//        return userService.login(loginRequest);
+//    }
+//
+//    @PostMapping("/logout")
+//    public void logout(@RequestHeader("token") String token) {
+//        userService.logout(token);
+//    }
 
-    @PostMapping("/logout")
-    public void logout(@RequestHeader("token") String token) {
-        userService.logout(token);
-    }
-
-    @PutMapping(consumes = "application/json", produces = "application/json")
-    public UserDTO editUser(@RequestBody NoteUser noteUser, @RequestHeader("token") String token) {
-        UserSession session = getSession(token);
-        return new UserDTO(userService.editUser(noteUser, session.getId()));
-    }
-
-    private UserSession getSession(String token) {
-        UserSession session = hazelcastService.getSession(token);
-        if(session == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Invalid noteUser token");
-        }
-        return session;
+    @PatchMapping(path = "/email", consumes = "application/json", produces = "application/json")
+    public UserDTO editUserEmail(@RequestBody @Email String email, @AuthenticationPrincipal NoteUserPrincipal userPrincipal) {
+        return new UserDTO(userService.editUser(email, userPrincipal.getId()));
     }
 }
 

@@ -18,7 +18,6 @@ import java.util.Date;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final HazelcastService hazelcastService;
 
     public NoteUser registerNewUser(SignupRequest signupRequest) {
         NoteUser alreadyExists = userRepository.findByEmail(signupRequest.getEmail());
@@ -29,29 +28,30 @@ public class UserService {
         return userRepository.save(noteUser);
     }
 
-    public String login(LoginRequest loginRequest) {
-        NoteUser noteUser = userRepository.findByEmailAndPassword(loginRequest.getEmail(),loginRequest.getPassword());
-        if(noteUser == null) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Wrong email/password combination.");
+//    public String login(LoginRequest loginRequest) {
+//        NoteUser noteUser = userRepository.findByEmailAndPassword(loginRequest.getEmail(),loginRequest.getPassword());
+//        if(noteUser == null) {
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Wrong email/password combination.");
+//        }
+//        UserSession userSession = new UserSession(noteUser);
+//        userSession = hazelcastService.createSession(userSession);
+//        return userSession.getToken();
+//    }
+//
+//    public void logout(String token) {
+//        hazelcastService.deleteSession(token);
+//    }
+
+    public NoteUser editUser(String email, String userId) {
+        NoteUser repeatedEmail = userRepository.findByEmail(email);
+        if(repeatedEmail != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The specified email is already registered.");
         }
-        UserSession userSession = new UserSession(noteUser);
-        userSession = hazelcastService.createSession(userSession);
-        return userSession.getToken();
-    }
-
-    public void logout(String token) {
-        hazelcastService.deleteSession(token);
-    }
-
-    public NoteUser editUser(NoteUser noteUser, String userIdFromToken) {
-        NoteUser foundNoteUser = userRepository.findOneById(noteUser.getId());
+        NoteUser foundNoteUser = userRepository.findOneById(userId);
         if(foundNoteUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The specified noteUser could not be found.");
         }
-        //TODO: get token info
-
-        foundNoteUser.setEmail(noteUser.getEmail());
-        foundNoteUser.setPassword(noteUser.getPassword());
+        foundNoteUser.setEmail(email);
         foundNoteUser.setLastUpdatedOn(new Date());
         return userRepository.save(foundNoteUser);
     }
