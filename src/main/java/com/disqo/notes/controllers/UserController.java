@@ -36,7 +36,7 @@ public class UserController {
 //        userService.logout(token);
 //    }
 
-    @PatchMapping(path = "/email", consumes = "application/json", produces = "application/json")
+    @PatchMapping(path = "/email", consumes = "text/plain", produces = "application/json")
     public UserDTO editUserEmail(@RequestBody @Email String email, @AuthenticationPrincipal NoteUserPrincipal userPrincipal) {
         return new UserDTO(userService.editUser(email, userPrincipal.getId()));
     }
