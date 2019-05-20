@@ -1,19 +1,13 @@
 package com.disqo.notes.controllers;
 
 import com.disqo.notes.dtos.UserDTO;
-import com.disqo.notes.entities.NoteUser;
-import com.disqo.notes.requests.LoginRequest;
 import com.disqo.notes.requests.SignupRequest;
-import com.disqo.notes.services.HazelcastService;
 import com.disqo.notes.services.UserService;
 import com.disqo.notes.sessions.NoteUserPrincipal;
-import com.disqo.notes.sessions.UserSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;

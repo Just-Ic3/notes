@@ -2,12 +2,9 @@ package com.disqo.notes.services;
 
 import com.disqo.notes.entities.NoteUser;
 import com.disqo.notes.repositories.UserRepository;
-import com.disqo.notes.requests.LoginRequest;
 import com.disqo.notes.requests.SignupRequest;
-import com.disqo.notes.sessions.UserSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
