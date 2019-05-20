@@ -5,35 +5,55 @@ Documentation available under: http://localhost:8080/swagger-ui.html
 
 Register:
 
-curl -X POST "http://localhost:8080/users/public/register" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{  \"email\": \"alex@iconos.mx\",  \"password\": \"alex1234\"}"
+curl -X POST \
+  http://localhost:8080/users/public/register \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"email":"alex@gmail.com",
+	"password":"password"
+}'
 
-Login:
+Edit Email:
 
-curl -X POST "http://localhost:8080/users/public/login" -H  "accept: plain/text" -H  "Content-Type: application/json" -d "{  \"email\": \"alex@iconos.mx\",  \"password\": \"alex1234\"}"
-
-Logout:
-
-curl -X POST "http://localhost:8080/users/logout" -H  "accept: */*" -H  "token: 929762c7-2654-4727-b4f6-ba6ebaf76cc0"
-
-Edit:
-
-curl -X PUT "http://localhost:8080/users" -H  "accept: application/json" -H  "token: token" -H  "Content-Type: application/json" -d "{  \"createdOn\": \"2019-05-17T03:11:43.786Z\",  \"email\": \"string\",  \"id\": \"string\",  \"lastUpdatedOn\": \"2019-05-17T03:11:43.786Z\",  \"password\": \"newpass\"}"
-
+curl -X PATCH \
+  http://localhost:8080/users/email \
+  -H 'Authorization: Basic YWxleEBpY29ub3MubXg6cGFzc3dvcmQ=' \
+  -H 'Content-Type: text/plain' \
+  -d alex@iconos.mx
 
 ===NOTES===
 
 List:
 
-curl -X GET "http://localhost:8080/notes" -H  "accept: */*" -H  "token: 3764212e-bd55-40db-afab-d46aac626d8d"
+curl -X GET \
+  http://localhost:8080/notes \
+  -H 'Authorization: Basic YWxleEBpY29ub3MubXg6cGFzc3dvcmQ='
 
 Get One:
 
-curl -X GET "http://localhost:8080/notes" -H  "accept: */*" -H  "token: 3764212e-bd55-40db-afab-d46aac626d8d"
+curl -X GET \
+  http://localhost:8080/notes/ff8081816ad3bd5c016ad3bfe8650000 \
+  -H 'Authorization: Basic YWxleEBpY29ub3MubXg6cGFzc3dvcmQ='
 
 Create:
 
-curl -X POST "http://localhost:8080/notes" -H  "accept: application/json" -H  "token: 3764212e-bd55-40db-afab-d46aac626d8d" -H  "Content-Type: application/json" -d "{  \"note\": \"My Note\",  \"title\": \"My note is the best!\"}"
+curl -X POST \
+  http://localhost:8080/notes \
+  -H 'Authorization: Basic YWxleEBpY29ub3MubXg6cGFzc3dvcmQ=' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "My note",
+    "note": "My note is the best!"
+}'
 
 Edit:
 
-curl -X PUT "http://localhost:8080/notes" -H  "accept: application/json" -H  "token: 547fe9b5-a057-4a1d-907f-4266ee0baa9c" -H  "Content-Type: application/json" -d "{  \"id\": \"ff8081816ac3c5a4016ac3ce41ec0001\",  \"title\": \"My note is still the best!\",  \"note\": \"My Note Updated\"}"
+curl -X PUT \
+  http://localhost:8080/notes \
+  -H 'Authorization: Basic YWxleEBpY29ub3MubXg6cGFzc3dvcmQ=' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": "ff8081816ad3e2bb016ad3f034500000",
+    "title": "My note is better everyday",
+    "note": "It is a work in progress!"
+}'
