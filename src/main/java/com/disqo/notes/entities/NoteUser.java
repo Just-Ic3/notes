@@ -3,6 +3,7 @@ package com.disqo.notes.entities;
 import com.disqo.notes.requests.SignupRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.util.List;
 @Entity
 @Table
 @NoArgsConstructor
+@AllArgsConstructor
 public class NoteUser {
 
     public NoteUser(SignupRequest signupRequest) {
