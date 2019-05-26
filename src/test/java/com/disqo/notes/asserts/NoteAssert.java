@@ -37,6 +37,14 @@ public class NoteAssert extends AbstractAssert<NoteAssert, Note> {
         return this;
     }
 
+    public NoteAssert createdDateIsDifferentFromLastUpdatedDate() {
+        isNotNull();
+        if(actual.getCreatedOn().equals(actual.getLastUpdatedOn())) {
+            failWithMessage("Expected note's created on date and last updated on date to be different, they were the same.");
+        }
+        return this;
+    }
+
     public NoteAssert titleEquals(String title) {
         isNotNull();
         if(!actual.getTitle().equals(title)) {
