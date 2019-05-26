@@ -1,5 +1,6 @@
 package com.disqo.notes.services;
 
+import com.disqo.notes.asserts.NoteAssert;
 import com.disqo.notes.entities.Note;
 import com.disqo.notes.entities.NoteUser;
 import com.disqo.notes.repositories.NoteRepository;
@@ -43,11 +44,14 @@ public class NoteServiceTests {
         //when
         Note savedNote = noteService.createNewNote(noteCreationRequest,"1");
         //then
-        assertThat(savedNote.getCreatedOn()).isNotNull();
-        assertThat(savedNote.getLastUpdatedOn()).isNotNull().isEqualTo(savedNote.getCreatedOn());
-        assertThat(savedNote.getTitle().equals("Title")).isTrue();
-        assertThat(savedNote.getNote().equals("Note")).isTrue();
-        assertThat(savedNote.getNoteUser()).isEqualTo(testUser);
+        NoteAssert.assertThat(savedNote)
+                .hasCreatedDate()
+                .hasLastUpdatedDate()
+                .createdDateEqualsLastUpdatedDate()
+                .noteFieldEquals("Note")
+                .titleEquals("Title")
+                .hasUser()
+                .userEquals(testUser);
     }
 
 
