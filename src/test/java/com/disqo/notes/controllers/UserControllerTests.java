@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -56,7 +57,8 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithUserDetails("alex@hotmail.com")
+    @WithUserDetails(value = "alex@iconos.mx")
+    @Sql("/test-user.sql")
     void whenValidEmailOnPatch_ThenReturn200() throws Exception {
         String newEmail = "alex@gmail.com";
         NoteUser editedUser = new NoteUser("1",newEmail,"password",new Date(),new Date(),null);
